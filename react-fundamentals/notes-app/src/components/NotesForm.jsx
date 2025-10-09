@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const NotesForm = () => {
+const NotesForm = ({ notes, setNotes }) => {
   /* 
    Works but uncommon way
    
@@ -24,8 +24,22 @@ const NotesForm = () => {
     });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.title || !formData.description) return;
+
+    const newNote = { id: Date.now(), ...formData };
+    setNotes([newNote, ...notes]);
+    setFormData({
+      title: '',
+      priority: 'Medium',
+      category: 'Work',
+      description: '',
+    });
+  };
+
   return (
-    <form className='mb-6'>
+    <form onSubmit={handleSubmit} className='mb-6'>
       <div className='mb-4'>
         <label htmlFor='title' className='block font-semibold'>
           Title
