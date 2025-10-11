@@ -1,4 +1,5 @@
 const NoteList = ({ notes, removeNote }) => {
+  console.log(notes.length);
   if (notes.length === 0) {
     return <p className='text-center text-gray-500'>No Notes Yet</p>;
   }
