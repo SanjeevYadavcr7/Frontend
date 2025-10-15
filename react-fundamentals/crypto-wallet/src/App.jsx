@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import CoinCard from './components/CoinCard';
-import LimitSelector from './components/LimitSelector';
-import FilterCoins from './components/FilterCoins';
-import SortSelector from './components/SortSelector';
+import HomePage from './pages/home';
+import { Route, Routes } from 'react-router';
+import AboutPage from './pages/about';
+import Header from './components/Header';
+import NotFoundPage from './pages/not-found';
 
 const API_URL = import.meta.env.VITE_APP_URL;
 
@@ -29,48 +30,31 @@ const App = () => {
     fetchCoinsData();
   }, [limit]);
 
-  const filteredCoins = coins
-    .filter((coin) => (coin.name.toLowerCase()).includes(searchTerm) || (coin.symbol.toLowerCase().includes(searchTerm)))
-    .slice()
-    .sort((a, b) => {
-      switch(sortBy) {
-        case 'market_cap_desc': 
-          return b.market_cap - a.market_cap;
-        case 'market_cap_asc':
-          return a.market_cap - b.market_cap;
-        case 'price_desc': 
-          return b.current_price - a.current_price;
-        case 'price_asc': 
-          return a.current_price - b.current_price;
-        case 'change_desc': 
-          return b.price_change_percentage_24h - a.price_change_percentage_24h;
-        case 'change_asc':
-          return a.price_change_percentage_24h - b.price_change_percentage_24h;
-      }
-    })
 
   return (
-    <div>
-      <h1>🚀 Crypto Dash</h1>
-      {loading && <p>Loading...</p>}
-      {error && <div className='error'>{error}</div>}
-
-      <div className='top-controls'>
-        <FilterCoins searchTerm={searchTerm} onFilterCoins={setSearchTerm} />
-        <LimitSelector limit={limit} onLimitChange={setLimit} />
-        <SortSelector sortBy={sortBy} onSortChange={setSortBy} />
-      </div>
-
-      {!loading && !error && (
-        <main className='grid'>
-          {
-            filteredCoins.length 
-            ? filteredCoins.map((coin) => (<CoinCard coin={coin} key={coin.id} />)) 
-            : <p>No coins matched</p>
-          }
-        </main>
-      )}
-    </div>
+    <>
+    <Header />
+    <Routes>
+      <Route 
+        path='/' 
+        element={
+          <HomePage 
+            coins={coins}
+            loading={loading}
+            error={error}
+            limit={limit}
+            searchTerm={searchTerm}
+            sortBy={sortBy}
+            setLimit={setLimit}
+            setSearchTerm={setSearchTerm}
+            setSortBy={setSortBy}  
+          />
+        } 
+      />
+      <Route path='/about' element={<AboutPage />} />
+      <Route path='*' element={<NotFoundPage />} />
+    </Routes>
+    </>
   );
 };
 
