@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import Spinner from "../components/Spinner";
-// import {Spinner} from '../components/Spinner';
+import CoinChart from "../components/CoinChart";
 
 const APP_URL = import.meta.env.VITE_COIN_URL;
 
@@ -50,6 +50,9 @@ const CoinDetails = () => {
                         <h3>Rank: {coinData.market_cap_rank}</h3>
                         <h3>Current Price: ${coinData.market_data.current_price.usd.toLocaleString()}</h3>
                     </div>
+
+                    <CoinChart coinId={coinData.id} />
+
                     <div className="coin-details-links">
                         { coinData.links.homepage[0] && (
                             <p>
