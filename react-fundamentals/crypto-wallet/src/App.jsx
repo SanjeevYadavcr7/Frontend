@@ -35,7 +35,8 @@ const App = () => {
   return (
     <>
     <Header />
-    <Routes>
+    {/* <Routes /> matches the current URL and renders first matching route */}
+    <Routes> 
       <Route 
         path='/' 
         element={
